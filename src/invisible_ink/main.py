@@ -49,7 +49,7 @@ def split_along_paragraphs(msg: str) -> list[str]:
 
 def set_font_white(run) -> None:
     '''applies the color white to the current run'''
-    run.font.color.rgb = RGBColor(0x00, 0x00, 0x00)
+    run.font.color.rgb = RGBColor(0xff, 0xff, 0xff)
 
 
 def set_font_as_before(run) -> None:
@@ -70,7 +70,6 @@ def generate_inv_ink_docx(
         current_paragraph.add_run('\n')
         invisible_run = current_paragraph.add_run(cipher[:ciph_chars_per_para])
         set_font_white(invisible_run)
-        current_paragraph.add_run('\n')
         cipher = cipher[ciph_chars_per_para:]
     return inv_ink_docx
 
@@ -86,7 +85,7 @@ def main():
     inv_ink_docx = generate_inv_ink_docx(
         MAIL_HEADER, mail_msg, encoded_msg, CIPH_CHARS_PER_PARAGRAPH
     )
-    ie.export_dox(inv_ink_docx)
+    ie.export_dox('invisible_ink.docx', inv_ink_docx)
 
 if __name__ == '__main__':
     main()
