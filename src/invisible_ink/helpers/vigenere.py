@@ -33,7 +33,16 @@ class VigenereEncoder():
         '''decodes vigenere cipher encoded_msg with with word.
         for an explanation of vigenere ciphers, see main.py docst'''
         # TODO: implement decoding function
-        print('not implemented yet! do at the end of project')
+        len_msg = len(self.encoded_cipher)
+        len_keyword = len(self.encoding_key)
+        extended_keyword = self.encoding_key * (len_msg // len_keyword)
+        extended_keyword = extended_keyword[:len_msg]
+        decoded_msg = ''
+        for idx, char in enumerate(self.encoded_cipher):
+            decoded_msg += self._get_decrypted_char(
+                extended_keyword[idx], char
+                )
+        return decoded_msg
 
 
     def _get_vigenere_table(self) -> dict[dict[str: str]]:
@@ -53,6 +62,13 @@ class VigenereEncoder():
     def _get_vig_char(self, code_word_char: str, msg_char: str) -> str:
         '''gets a single vigenere encoded char based upon the given table'''
         return self.table[code_word_char][msg_char]
+
+
+    def _get_decrypted_char(self, key_char: str, encrypted_char: str) -> str:
+        for decrypted, encrypted in self.table[key_char].items():
+            if encrypted == encrypted_char:
+                return decrypted
+        return None
 
 
     def _validate_key(self, key_wrd: str, spaces: bool = False):
