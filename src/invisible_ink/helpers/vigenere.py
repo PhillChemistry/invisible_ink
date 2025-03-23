@@ -20,7 +20,7 @@ class VigenereEncoder():
         for an explanation of vigenere ciphers, see main.py docst'''
         msg = self.clear_txt_msg.replace(' ', '')
         msg_len = len(msg)
-        total_key = self.encoding_key * len(msg) // msg_len + 1
+        total_key = self.encoding_key * (len(msg) // msg_len + 1)
         total_key = total_key[:msg_len]
         encoded = ''
         for key_char, msg_char in zip(total_key, msg):
@@ -40,11 +40,12 @@ class VigenereEncoder():
         '''generates a vigenere table as a dict of dicts of strs.
         called using table[code_wrd_letter][clear_txt_letter] = encoded_letter
         '''
+        char_pool = string.ascii_lowercase * 2
         vig_table = {}
-        for code_wrd_char in string.ascii_lowercase:
+        for offset, code_wrd_char in enumerate(string.ascii_lowercase):
             vig_table[code_wrd_char] = {
-                msg_char: chr(ord(msg_char) + idx)
-                for idx, msg_char in enumerate(string.ascii_lowercase)
+                msg_char: char_pool[pool_idx + offset]
+                for pool_idx, msg_char in enumerate(string.ascii_lowercase)
             }
         return vig_table
 
@@ -54,7 +55,9 @@ class VigenereEncoder():
         return self.table[code_word_char][msg_char]
 
 
-    def _validate_key(self, key_wrd, spaces=False):
+    def _validate_key(self, key_wrd: str, spaces: bool = False):
+        for char in string.punctuation:
+            key_wrd = key_wrd.replace(char, '')
         if not isinstance(key_wrd, str):
             print('encoding_key must be str!')
             raise ValueError
@@ -64,6 +67,7 @@ class VigenereEncoder():
                     print('key must be singe word!' )
                     raise ValueError
             else:
-                if char not in string.ascii_lowercase or char == ' ':
+                if not (char in string.ascii_lowercase or char == ' '):
+                    print(f'found an issue with char {char} in {key_wrd}!')
                     raise ValueError
         return key_wrd
