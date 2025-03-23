@@ -85,6 +85,7 @@ def main():
     inv_ink_docx = generate_inv_ink_docx(
         MAIL_HEADER, mail_msg, encoded_msg, CIPH_CHARS_PER_PARAGRAPH
     )
+    breakpoint()
     ie.export_dox('invisible_ink.docx', inv_ink_docx)
 
 if __name__ == '__main__':

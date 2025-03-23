@@ -20,7 +20,7 @@ class VigenereEncoder():
         for an explanation of vigenere ciphers, see main.py docst'''
         msg = self.clear_txt_msg.replace(' ', '')
         msg_len = len(msg)
-        total_key = self.encoding_key * (len(msg) // msg_len + 1)
+        total_key = self.encoding_key * (msg_len // len(self.encoding_key) + 1)
         total_key = total_key[:msg_len]
         encoded = ''
         for key_char, msg_char in zip(total_key, msg):
